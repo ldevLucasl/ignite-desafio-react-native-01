@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { View } from 'react-native';
+import { View, ViewProps } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface ItemWrapperProps {
