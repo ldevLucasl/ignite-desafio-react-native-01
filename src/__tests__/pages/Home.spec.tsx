@@ -5,19 +5,20 @@ import { Home } from '../../pages/Home';
 
 describe('Home', () => {
   it('should be able to render new added tasks', () => {
-    const { getByPlaceholderText, getByText } = render(<Home />);
+    const { getByPlaceholderText, getByText, getByTestId } = render(<Home />);
     const inputElement = getByPlaceholderText('Adicionar novo todo...');
+    const addButton = getByTestId('add-new-task-button');
 
     expect(getByText('0 tarefas'));
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(addButton);
     
     expect(getByText('Primeira tarefa'));
     expect(getByText('1 tarefa'));
 
     fireEvent.changeText(inputElement, 'Segunda tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(addButton);
 
     expect(getByText('Primeira tarefa'));
     expect(getByText('Segunda tarefa'));
@@ -27,9 +28,10 @@ describe('Home', () => {
   it('should be able to render tasks as done and undone', () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(<Home />);
     const inputElement = getByPlaceholderText('Adicionar novo todo...');
+    const addButton = getByTestId('add-new-task-button');
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(addButton);
 
     const buttonElement = getByTestId('button-0');
     const markerElement = getByTestId('marker-0');
@@ -71,14 +73,15 @@ describe('Home', () => {
   it('should be able to remove tasks after the trash icon was pressed', async () => {
     const { getByPlaceholderText, getByText, getByTestId, queryByText } = render(<Home />);
     const inputElement = getByPlaceholderText('Adicionar novo todo...');
+    const addButton = getByTestId('add-new-task-button');
 
     fireEvent.changeText(inputElement, 'Primeira tarefa');
-    fireEvent(inputElement, 'submitEditing');
-    
-    fireEvent.changeText(inputElement, 'Segunda tarefa');
-    fireEvent(inputElement, 'submitEditing');
+    fireEvent.press(addButton);
 
     const firstTaskTrashIcon = getByTestId('trash-0');
+
+    fireEvent.changeText(inputElement, 'Segunda tarefa');
+    fireEvent.press(addButton);
 
     fireEvent(firstTaskTrashIcon, 'press');
 
